@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - npm install
+  build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      - aws s3 sync dist s3://immo-ui --delete
+      - aws cloudfront create-invalidation --distribution-id E2WPOPMTKTJRTN --paths '/*'
+
+cache:
+  paths:
+    - node_modules/**/*
